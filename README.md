@@ -85,7 +85,7 @@ Exactly one method in one class was modified.
 
 Nothing else in the jar was changed, including:
 
-* `mods.toml`
+* mods.toml
 * manifests
 * services
 * resource files
