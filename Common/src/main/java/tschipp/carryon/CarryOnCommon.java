@@ -29,7 +29,6 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -191,34 +190,8 @@ public class CarryOnCommon
 		}
 	}
 
-
 	public static int potionLevel(CarryOnData carry, Level level)
 	{
-		if(carry.isCarrying(CarryType.PLAYER))
-			return 1;
-		if(carry.isCarrying(CarryType.ENTITY))
-		{
-			Entity entity = carry.getEntity(level);
-			int i = (int) (entity.getBbHeight() * entity.getBbWidth());
-			if (i > 4)
-				i = 4;
-			if (!Constants.COMMON_CONFIG.settings.heavyEntities)
-				i = 1;
-			return (int) (i * Constants.COMMON_CONFIG.settings.entitySlownessMultiplier);
-		}
-		if(carry.isCarrying(CarryType.BLOCK))
-		{
-			String nbt = carry.getNbt().toString();
-			int i = nbt.length() / 500;
-
-			if (i > 4)
-				i = 4;
-
-			if (!Constants.COMMON_CONFIG.settings.heavyTiles)
-				i = 1;
-
-			return (int) (i * Constants.COMMON_CONFIG.settings.blockSlownessMultiplier);
-		}
 		return 0;
 	}
 }
