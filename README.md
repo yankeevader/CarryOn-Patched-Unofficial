@@ -1,27 +1,87 @@
-This is an unofficial patch for Carry On 2.2.4.4 on NeoForge 1.21.1.
+# Carry On Patched
 
-What the patch does
-The entire body of potionLevel was replaced with a 2-instruction stub:
+Unofficial patch for **Carry On 2.2.4.4** on **NeoForge 1.21.1**.
 
-0: iconst_0    // push the integer 0 onto the stack
-1: ireturn     // return it
-That is the entire patched method. It takes its two arguments, ignores them both, and unconditionally returns 0. There are no branches, no field reads, no method calls, no NBT access of any kind. It is structurally incapable of throwing any exception.
+---
 
-Why returning 0 specifically
-Examining the single call site in onCarryTick, the int returned by potionLevel is passed as the duration parameter (in ticks) of a MobEffectInstance(Slowness, duration, amplifier=0, ambient=false, visible=false) that gets applied to the carrying player.
+## What this patch does
 
-Returning 0 → 0-tick duration → effect expires the same tick it's applied → no slowness applied to the player at all.
-The amplifier was hardcoded to 0 in the caller and was never affected by potionLevel's return value, despite the method's misleading name.
-So returning 0 produces the cleanest possible behavior: the player is not slowed while carrying anything, and no NBT is ever read by this method.
+The entire body of `potionLevel` was replaced with a minimal 2-instruction stub:
 
-This Patched Version Does Not Calculate Slowness Debuff - amplifier was already hardcoded to 0 anyways
--- NOTE --
-arguably safer operationally than partial try/catch patches because:
+```java
+0: iconst_0
+1: ireturn
+```
 
-no malformed NBT ever gets touched
-no logging path can retrigger the same crash
-no repeated exception spam every tick
-no hidden performance hit from exception handling loops
-removed the dangerous execution path entirely
+That is the complete patched method.
 
-Exactly one method in one class was modified. Nothing else in the jar — manifests, mods.toml, services, resource files, other classes — was touched.
+It takes its two arguments, ignores them, and unconditionally returns `0`.
+
+The patched method contains:
+
+* No branches
+* No field reads
+* No method calls
+* No NBT access of any kind
+
+Because of this, the method is structurally incapable of triggering the malformed NBT crash path.
+
+---
+
+## Why returning `0` fixes the issue
+
+Examining the single call site in `onCarryTick`, the integer returned by `potionLevel` is passed as the duration parameter of:
+
+```java
+MobEffectInstance(
+    Slowness,
+    duration,
+    amplifier = 0,
+    ambient = false,
+    visible = false
+)
+```
+
+Returning `0` produces:
+
+```text
+0-tick duration → effect expires immediately → no slowness applied
+```
+
+The amplifier was already hardcoded to `0` in the caller and was never influenced by `potionLevel`'s return value, despite the method name suggesting otherwise.
+
+As a result, returning `0` creates the cleanest operational behavior:
+
+* Players are not slowed while carrying blocks/entities
+* No malformed NBT is ever read by this method
+* The crash path is removed entirely
+
+---
+
+## Notes about behavior changes
+
+This patched version does **not** calculate the slowness debuff.
+
+That tradeoff is intentional.
+
+Compared to partial `try/catch` patches, this approach is operationally safer because:
+
+* No malformed NBT is ever touched
+* No logging path can retrigger the same crash
+* No repeated exception spam occurs every tick
+* No hidden performance cost from exception handling loops
+* The dangerous execution path is removed entirely
+
+---
+
+## Scope of the patch
+
+Exactly one method in one class was modified.
+
+Nothing else in the jar was changed, including:
+
+* `mods.toml`
+* manifests
+* services
+* resource files
+* other classes
