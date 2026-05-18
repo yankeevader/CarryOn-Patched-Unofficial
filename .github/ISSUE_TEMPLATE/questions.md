@@ -2,7 +2,7 @@
 name: Questions
 about: Q&A Time!
 title: ''
-labels: ''
+labels: question
 assignees: ''
 
 ---
