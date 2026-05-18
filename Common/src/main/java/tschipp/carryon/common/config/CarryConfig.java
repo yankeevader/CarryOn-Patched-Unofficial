@@ -270,7 +270,7 @@ public class CarryConfig
 					"cookingforblockheads:oven", "cookingforblockheads:toaster", "cookingforblockheads:milk_jar", "cookingforblockheads:cow_jar",
 					"cookingforblockheads:fruit_basket", "cookingforblockheads:cooking_table", "cookingforblockheads:fridge", "cookingforblockheads:sink",
 					"chipped:*", "irons_spellbooks:*", "create*:*", "simple_pipes:*", "libmultipart:*", "quark:tiny_potato", "ait:*",
-					"vampirism:*", "extrastorage:*", "relics:researching_table", "sophisticatedstorage:*chest",
+					"vampirism:*", "extrastorage:*", "sophisticatedbackpacks:*", "relics:researching_table", "sophisticatedstorage:*chest",
 					"powah:*", "advancementtrophies:trophy", "mekanismgenerators:heat_generator", "mna:filler_block", "create_enchantment_industry:*", "graveyard:*", "immersivepetroleum:*",
 					"tardis:interior_door", "cuffed:*", "littletiles:*",
 					"butchersdelight:*", "irons_spellbooks:*", "extended_drawers:*", "functionalstorage:*", "sophisticatedstorage:*", "farmersdelight:*",
