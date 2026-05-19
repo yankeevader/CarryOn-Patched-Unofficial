@@ -132,8 +132,6 @@ public class CarryOnCommon
 		    if (!Constants.COMMON_CONFIG.settings.slownessInCreative && player.isCreative())
 			    return;
 
-		    player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 1, potionLevel(carry, player.level()), false, false));
-
 		    Inventory inv = player.getInventory();
 			inv.selected = carry.getSelected();
 	    }
